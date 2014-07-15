@@ -1,29 +1,76 @@
-package main
+package functional
 
-import (
-	"fmt"
-	"github.com/izqui/helpers"
-)
+import "reflect"
+import _ "fmt"
 
-type AnonFunc func(x interface{}) interface{}
-type AnonSlice []interface{}
+func DoMap(f interface{}, vs interface{}) interface{} {
 
-func main() {
+	vf := reflect.ValueOf(f)
+	vx := reflect.ValueOf(vs)
 
-	numbers := AnonSlice{1, 2, 3}
-	fmt.Println("Square", numbers, doMap(func(x interface{}) interface{} { return x.(int) * x.(int) }, numbers))
+	l := vx.Len()
 
-	words := AnonSlice{"hola", "que", "tal", "estas"}
-	fmt.Println("Length", words, doMap(func(x interface{}) interface{} { return len(x.(string)) }, words))
+	tys := reflect.SliceOf(vf.Type().Out(0))
+	vys := reflect.MakeSlice(tys, l, l)
 
-	fmt.Println("Hash", words, doMap(func(x interface{}) interface{} { return helpers.SHA1(string(x.(string))) }, words))
+	for i := 0; i < l; i++ {
+		y := vf.Call([]reflect.Value{vx.Index(i)})[0]
+		vys.Index(i).Set(y)
+	}
+
+	return vys.Interface()
 }
 
-func doMap(f AnonFunc, vs AnonSlice) (r AnonSlice) {
+/*
+func Reduce(f interface{}, vs interface{}, in interface{}) interface{} {
 
-	r = make(AnonSlice, len(vs))
-	for i, v := range vs {
-		r[i] = f(v)
+	vf := reflect.ValueOf(f)
+	vx := reflect.ValueOf(vs)
+
+	l := vx.Len()
+
+	a := reflect.New(vf.Type().In(0))
+
+	v := a.Elem()
+
+	fmt.Println(reflect.ValueOf(in))
+
+	v.Set(reflect.ValueOf(in))
+
+	for i := 0; i < l; i++ {
+
+		a.Set(vf.Call([]reflect.Value{a, vx.Index(i)})[0].Elem())
 	}
-	return r
+
+	return a.Interface()
+}
+*/
+
+func Filter(f interface{}, vs interface{}) interface{} {
+
+	vf := reflect.ValueOf(f)
+	vx := reflect.ValueOf(vs)
+
+	l := vx.Len()
+
+	tys := reflect.SliceOf(vf.Type().In(0))
+
+	vss := []reflect.Value{}
+
+	for i := 0; i < l; i++ {
+
+		v := vx.Index(i)
+		if vf.Call([]reflect.Value{v})[0].Bool() {
+
+			vss = append(vss, v)
+		}
+	}
+
+	vys := reflect.MakeSlice(tys, len(vss), len(vss))
+
+	for i, v := range vss {
+		vys.Index(i).Set(v)
+	}
+
+	return vys.Interface()
 }
