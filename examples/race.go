@@ -20,16 +20,15 @@ func draw(r Race) {
 
 	drawing := f.DoMap(func(car Car) string {
 
-		s := ""
-		for i := 0; i < car.Position; i++ {
+		return f.Reduce(func(a string, i int) string {
 
-			s += "-"
-		}
+			return a + "-"
 
-		return s
+		}, make([]int, car.Position), "").(string)
+
 	}, r.Cars).([]string)
 
-	fmt.Println("......................")
+	fmt.Println("............................")
 	f.DoMap(func(a string) interface{} {
 
 		fmt.Println(a)
@@ -37,20 +36,23 @@ func draw(r Race) {
 	}, drawing)
 }
 
-func raceLoop(r Race) Race {
+func carState(cars []Car) []Car {
 
-	r.Time -= 1
-	r.Cars = f.DoMap(func(car Car) Car {
+	return f.DoMap(func(c Car) Car {
 
 		if helpers.RandomInt(0, 3) == 0 {
 
-			car.Position += 1
+			return Car{Position: c.Position + 1}
 		}
 
-		return car
-	}, r.Cars).([]Car)
+		return Car{Position: c.Position}
 
-	return r
+	}, cars).([]Car)
+}
+
+func raceLoop(r Race) Race {
+
+	return Race{Time: r.Time - 1, Cars: carState(r.Cars)}
 }
 
 func race(r Race) {
