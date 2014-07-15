@@ -32,8 +32,6 @@ func Reduce(f interface{}, vs interface{}, in interface{}) interface{} {
 
 	v.Set(reflect.ValueOf(in))
 
-	fmt.Println(v.Int())
-
 	for i := 0; i < l; i++ {
 
 		v.Set(vf.Call([]reflect.Value{a.Elem(), vx.Index(i)})[0])

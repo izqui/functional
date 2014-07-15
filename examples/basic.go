@@ -19,8 +19,8 @@ func main() {
 
 	fmt.Println("REDUCE")
 
-	fmt.Println("Sum", numbers, f.Reduce(func(a int, x int) int { return a + x }, numbers, 1))
-	//fmt.Println("Total length", words, f.Reduce(func(a interface{}, x interface{}) interface{} { return a.(int) + len(x.(string)) }, words, 0))
+	fmt.Println("Sum", numbers, f.Reduce(func(a int, x int) int { return a + x }, numbers, 0))
+	fmt.Println("Total length", words, f.Reduce(func(a int, x string) int { return a + len(x) }, words, 0))
 
 	fmt.Println("FILTER")
 	fmt.Println("Long words (>5)", words, f.Filter(func(x string) bool { return (len(x) > 5) }, words))
