@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/izqui/helpers"
 )
 
 type AnonFunc func(x interface{}) interface{}
@@ -14,6 +15,8 @@ func main() {
 
 	words := AnonSlice{"hola", "que", "tal", "estas"}
 	fmt.Println("Length", words, doMap(func(x interface{}) interface{} { return len(x.(string)) }, words))
+
+	fmt.Println("Hash", words, doMap(func(x interface{}) interface{} { return helpers.SHA1(string(x.(string))) }, words))
 }
 
 func doMap(f AnonFunc, vs AnonSlice) (r AnonSlice) {
