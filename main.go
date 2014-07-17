@@ -1,7 +1,7 @@
 package functional
 
 import "reflect"
-import "fmt"
+import _ "fmt"
 
 func Reduce(f interface{}, vs interface{}, in interface{}) interface{} {
 
@@ -12,14 +12,12 @@ func Reduce(f interface{}, vs interface{}, in interface{}) interface{} {
 
 	a := reflect.New(reflect.TypeOf(in))
 	v := a.Elem()
-	fmt.Println("expecting", v)
 
 	v.Set(reflect.ValueOf(in))
 
 	for i := 0; i < l; i++ {
 
 		a := vf.Call([]reflect.Value{a.Elem(), vx.Index(i)})[0]
-		fmt.Println("a", a)
 		v.Set(a)
 	}
 
@@ -52,7 +50,7 @@ func Filter(f interface{}, vs interface{}) interface{} {
 		vys.Index(i).Set(v)
 	}
 
-	return reflect.ValueOf(vys)
+	return vys.Interface()
 }
 
 func DoMap(f interface{}, vs interface{}) interface{} {
