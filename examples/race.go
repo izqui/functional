@@ -18,7 +18,7 @@ type Car struct {
 
 func draw(r Race) {
 
-	drawing := f.DoMap(func(car Car) string {
+	drawing := f.Map(func(car Car) string {
 
 		return f.Reduce(func(a string, i int) string {
 
@@ -29,7 +29,7 @@ func draw(r Race) {
 	}, r.Cars).([]string)
 
 	fmt.Println("............................")
-	f.DoMap(func(a string) interface{} {
+	f.Map(func(a string) interface{} {
 
 		fmt.Println(a)
 		return a
@@ -38,7 +38,7 @@ func draw(r Race) {
 
 func carState(cars []Car) []Car {
 
-	return f.DoMap(func(c Car) Car {
+	return f.Map(func(c Car) Car {
 
 		if helpers.RandomInt(0, 3) == 0 {
 

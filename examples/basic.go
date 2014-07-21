@@ -13,9 +13,9 @@ func main() {
 
 	fmt.Println("MAP")
 
-	fmt.Println("Square", numbers, f.DoMap(func(x int) int { return x * x }, numbers))
-	fmt.Println("Length", words, f.DoMap(func(x string) int { return len(x) }, words))
-	fmt.Println("Hash", words, f.DoMap(hash, words))
+	fmt.Println("Square", numbers, f.Map(func(x int) int { return x * x }, numbers))
+	fmt.Println("Length", words, f.Map(func(x string) int { return len(x) }, words))
+	fmt.Println("Hash", words, f.Map(hash, words))
 
 	fmt.Println("REDUCE")
 

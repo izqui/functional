@@ -53,7 +53,7 @@ func Filter(f interface{}, vs interface{}) interface{} {
 	return vys.Interface()
 }
 
-func DoMap(f interface{}, vs interface{}) interface{} {
+func Map(f interface{}, vs interface{}) interface{} {
 
 	vf := reflect.ValueOf(f)
 	vx := reflect.ValueOf(vs)
@@ -96,7 +96,7 @@ func Pipeline(fs interface{}, vs interface{}) interface{} {
 			fs = append(fs, vfs.Index(i))
 		}
 
-		return DoMap(func(v interface{}) interface{} {
+		return Map(func(v interface{}) interface{} {
 
 			return Reduce(func(a interface{}, f interface{}) interface{} {
 
